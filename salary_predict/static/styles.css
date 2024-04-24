@@ -1,0 +1,34 @@
+.container{
+    height: 90vh;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:beige;
+}
+.navbar{
+    height: 10vh;
+}
+.card{
+    text-align: center;
+    min-width: 50vw;
+}
+.btn{
+    width: 100%;
+}
+label{
+    font-size: 21px;
+    font-weight: 500;
+}
+.select2-container .select2-selection--single{
+    height: 40px !important;
+    padding: 5px !important;
+    border: 1px solid #ced4da !important;
+}
+.predict-text{
+    color: black;
+    margin-top: 30px;
+    background-color: #C8CDBA;
+    padding: 15px 0;
+    text-align: center;
+}

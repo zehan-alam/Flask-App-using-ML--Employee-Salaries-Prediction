@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title> Salary Prediction App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+  <!-- Select2 CSS and JS files -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      var department = ['BOA', 'BOE', 'CAT', 'CCL', 'CEC', 'CEX', 'COR', 'CUS',
+        'DEP', 'DGS', 'DHS', 'DOT', 'DPS', 'ECM', 'FIN', 'FRS', 'HCA',
+        'HHS', 'HRC', 'IGR', 'LIB', 'MPB', 'NDA', 'OAG', 'OAS', 'OCP',
+        'OFR', 'OGM', 'OHR', 'OIG', 'OLO', 'OLR', 'OMB', 'ORE', 'PIO',
+        'POL', 'PRO', 'REC', 'SHF', 'TBS', 'ZAH'];
+
+      var division = ['Administrative Services',
+        'Beer Delivery Operations', 'Beer Loading',
+        'Beer Warehouse Operations', 'Licensure, Regulation and Education',
+        'Liquor and Wine Delivery Operations', 'Wholesale Operations',
+        'Burtonsville', 'Cabin John', 'Clarksburg Village', 'Cloverly',
+        'Darnestown', 'Director', 'Fallsgrove', "Director's Office",
+        'Downtown Rockville', 'Flower Avenue', 'Gaithersburg Square',
+        'Goshen Crossing', 'Hampden Lane', 'IT Administration',
+        'Kensington', 'King Farm', 'Kingsview', 'Leisure World',
+        'Liquor and WIne Loading', 'Montrose', 'Muddy Branch', 'Olney',
+        'Poolesville', 'Potomac', 'Purchasing', 'Retail Administration',
+        'Seneca Meadows', 'Silver Spring',
+        'Special Order Liquor and Wine Warehouse Operations',
+        'Stock Liquor and Wine Warehouse Operations', 'Walnut Hill',
+        'Westwood', 'Wheaton', 'White Oak', 'Wholesale Administration',
+        'Aspen Hill', 'Board of Appeals Division', 'Executive Director',
+        'Absentee Voting', 'Election Judge Recruitment',
+        'Election Operations', 'Information Technology Division',
+        'Polling Place Management', 'Registration Services',
+        'County Attorney', "County Attorney's Office",
+        'Finance and Procurement', 'Government Operations',
+        'Health and Human Services', 'Insurance Defense Litigation',
+        'Labor Relations and Public Safety', 'Support Services',
+        'Zoning, Land Use and Economic Development',
+        'Council Central Staff', 'Council Members and Staff',
+        'Wheaton Urban District', 'Bethesda Urban District',
+        'Business Management', 'Commission for Women',
+        'Community Engagement Cluster', 'Community Partnerships',
+        'Gilchrist Center', 'Regional Services Centers',
+        'Silver Spring Urban District',
+        "Chief Administrative Officer's Office",
+        "County Executive's Office", 'Innovation Accelerator',
+        'Internal Audit', 'Offices of the County Executive',
+        'Business Advancement Team', 'DS MCCF Unit 1 Security',
+        'DS MCCF Unit 3 Security', 'PRRS Facility and Security',
+        'DS MCDC Custody and Security', 'DS MCDC Inmate Property',
+        'DS MCDC Intake/Release Operations', 'DO Director',
+        'DO Professional Standards Unit', 'DS Detention Services',
+        'DS Facility Operations Management', 'DS Food Services',
+        'DS Gang Intelligence', 'DS Health Services', 'DS Inmate Records',
+        'DS Intake Classification and Re-Entry Services',
+        'DS MCCF Case Managers Unit 1', 'DS MCCF Case Managers Unit 2',
+        'DS MCCF Case Managers Unit 3', 'DS MCCF Custody and Security',
+        'DS MCCF Educational Services', 'DS MCCF Facilities Maintenance',
+        'DS Programs and Services', 'DS MCCF Unit 2 Security',
+        'DS MCDC Central Processing Unit', 'PTS Supervision',
+        'MSD Employee Health, Welfare and Safety', 'MSD Fiscal Services',
+        'MSD Human Resources', 'MSD Information Technology',
+        'MSD Management Services Division',
+        'MSD Procurement and Contracts',
+        'MSD Training and Staff Development',
+        'PRRS Assessment and Quality Services',
+        'PRRS Reentry Services and Programs',
+        'PTS Alternative Community Services', 'PTS Assessment',
+        'PTS Diversion Services',
+        'PTS Intervention Program for Substance Abusers',
+        'PTS Pre-Trial Services', 'Community Use of Public Facilities',
+        'Core Services Team', 'Finance and Administrative Support Team',
+        'Silver Spring Civic Building', 'Administration and Operations',
+        'Building and Transportation Programs', 'Climate Programs',
+        'Communications and Public Engagement', 'Design and Construction',
+        'Energy, Climate and Compliance Division',
+        'Environmental Compliance Group', 'Intergovernmental Affairs',
+        'Low-Impact Development', 'Materials Management',
+        'Planning, Design, Construction and Monitoring',
+        'Planning, Outreach and Monitoring',
+        'Recycling and Refuse Services',
+        'Recycling and Resource Management Division',
+        'Resource Conversion', 'Stewardship Programs',
+        'Stormwater BMP Inspection and Maintenance',
+        'Strategic Services Division', 'Waste Reduction and Recycling',
+        'Watershed Restoration Division', 'ADA Compliance',
+        'Administration and Budget', 'Automation',
+        'Building Design and Construction', 'Central Duplicating',
+        'Central Services', 'Contracting and Accounts Payable',
+        'Energy and Sustainability', 'Facilities',
+        'Facilities Maintenance', 'Facilities Major Programs',
+        'Fleet Automotive Heavy Equipment',
+        'Fleet Management Administration',
+        'Fleet Management Fleet Services', 'Fleet Management Services',
+        'Real Estate Office', 'Planning and Development',
+        'Property Management', 'Hazmat Permitting',
+        'Operations and Training', 'Policy and Planning',
+        'Commuter Services', 'Commuter Services Trips',
+        'Development Review', 'Director Management Services',
+        'Director Transportation Policy', 'Highway Administration',
+        'Highway Services', 'Parking Management',
+        'Parking Management Administration',
+        'Parking Management Engineering and Capital Project Management',
+        'Parking Management Financial Management',
+        'Parking Management Parking Operations', 'Ride On Operations',
+        'Sign and Marking Shop', 'Traffic Engineering and Operations',
+        'Traffic Engineering and Operations Management Services',
+        'Transit Gaithersburg Ride On',
+        'Traffic Engineering Design and Operations',
+        'Traffic Engineering Studies Section',
+        'Transit Central Communication', 'Transit COS Marketing',
+        'Transit COS Passenger Facilities',
+        'Transit COS Taxicab Regulation',
+        'Transit Customer Operations and Support', 'Transit Fare Media',
+        'Transit Management Services', 'Transit Nicholson Ride On',
+        'Transit Operations and Planning',
+        'Transit Safety and Instruction', 'Transit Services',
+        'Transit Services Information Technology',
+        'Transit Silver Spring Ride On',
+        'Transit Special Transportation and Medicaid',
+        'Transportation Construction Section',
+        'Transportation Engineering Administration',
+        'Transportation Management',
+        'Transportation Materials Testing Lab',
+        'Transportation Planning and Design Section',
+        'Transportation Property Acquisition Section',
+        'Transportation System Engineering',
+        'Transportation Technical Center', 'Central Services Unit',
+        'Commercial Bldg/LS/Access/FPS',
+        'Commercial Electrical and FPS Inspections',
+        'Commercial Structural and Complex Structures',
+        'Commercial Sustainability, Energy, and Mechanical',
+        'Customer Support', 'Customer Support and Outreach Division',
+        'Fire Code Compliance',
+        'Commercial Building Construction Division',
+        'Information Technology Services', 'Land Development Division',
+        'Land Development Right-of-Way Inspection',
+        'Land Development Right-of-Way Plan Review',
+        'Zoning and Code Compliance',
+        'Land Development Sediment and Stormwater Inspection',
+        'Land Development Sediment Stormwater Plan Review',
+        'Residential Construction and Fire Code Compliance',
+        'Residential Inspections', 'Residential Plan Review',
+        'Well and Septic Review and Inspections',
+        'Zoning and Site Plan Compliance', 'Zoning Review',
+        'Administrative Support', 'Accounts Payable',
+        'Accounts Receivable', 'Division of Fiscal Management',
+        'Division of Risk Management', 'Division of the Controller',
+        'Division of the Treasury',
+        'Financial Analysis Audit and Compliance', 'General Accounting',
+        'Grants Accounting', 'Information Technology', 'Insurance',
+        'Management and Operations - Director',
+        'Operations and Administration - Controller',
+        'Operations and Administration - Risk Management', 'Payroll',
+        'Safety', 'Tax Operations', 'Treasury Operations',
+        'Admin Services', 'Behavioral Health',
+        'Emergency Communications Center (ECC)',
+        'Emergency Medical & Integrated Healthcare Services',
+        'EMS Billing', 'Field Recruits', 'Field Relief Personnel',
+        'Fifth Battalion - Administration',
+        'Fire and Explosive Investigations',
+        'Fire and Rescue Occupational Medical Services', 'Fire Chief',
+        "Fire Chief's Executive Office",
+        'First Battalion - Administration', 'Fiscal Management Division',
+        'Fleet Operations', 'Budgets and Grants',
+        'Community Emergency Response Team (CERT)',
+        'Community Risk Reduction', "Duty Operations Chief's Office",
+        'EMS Logistics', 'Field Operations Administration',
+        'Fleet Support', 'Fourth Battalion - Administration', 'Rescue 2',
+        'Scheduling', 'Second Battalion - Administration', 'Station 13',
+        'Station 14', 'Station 19', 'Station 21', 'Station 22',
+        'Human Resources Division', 'Internal Affairs',
+        'Length of Service Awards Program', 'Logistics',
+        'Operations Division', 'Planning and Accreditation', 'Procurement',
+        'Property and Supply', 'Property and Supply Section',
+        'Recruit Training', 'Recruiting',
+        'Self Contained Breathing Apparatus (SCBA) Shop',
+        'Special Operations', 'Station 1', 'Station 10', 'Station 11',
+        'Station 12', 'Station 15', 'Station 16', 'Station 17',
+        'Station 18', 'Station 2', 'Station 20', 'Station 23',
+        'Station 24', 'Station 25', 'Station 26', 'Station 28',
+        'Station 32', 'Station 33', 'Station 6', 'Station 8', 'Station 9',
+        'Station 29', 'Station 3', 'Station 30', 'Station 31',
+        'Station 34', 'Station 35', 'Station 4', 'Station 40', 'Station 5',
+        'Station 7', 'Support Services Division', 'Technology Services',
+        'Third Battalion - Administration', 'Training',
+        'Volunteer Services Division', 'Affordable Housing Programs',
+        'Asset Management', 'Common Ownership Community Program',
+        'Community Development',
+        'Community Development Neighborhood Revitalization',
+        'Director Administration', 'Finance and Administration Division',
+        'Grants Management', 'Housing', 'Housing Administration',
+        'Housing Code Enforcement', 'Licensing', 'Management Services',
+        'Multi-Family Housing Program',
+        'Housing Landlord and Tenant Mediation',
+        'Aging & Disability Services Division',
+        'Behavioral Health and Crisis Services Division',
+        'Office of Eligibility and Support Services',
+        'Chief Operating Officer Division', 'Child Welfare Services',
+        'Children Youth and Family Services Division',
+        'School Health Services', 'Office of Community Affairs Division',
+        "Director's Office Division", 'Public Health Services Division',
+        'Services to End and Prevent Homelessness Division', 'Compliance',
+        'Office of Intergovernmental Relations',
+        'Office of Intergovernmental Relations Department',
+        'Aspen Hill Library', 'Brigadier General Charles E. McGee Library',
+        'Business Office', 'Cataloging and Preparation',
+        'Chevy Chase Library', 'Collection Management',
+        'Community Outreach', 'Connie Morella Library', 'Damascus Library',
+        'Davis Library', 'Deaf Culture Digital Library',
+        'Detention Center Library', 'Digital Strategies',
+        'Gaithersburg Library', 'Quince Orchard Library',
+        'Rockville Library', 'White Oak Library',
+        'Workforce and Business Development Section', 'Germantown Library',
+        'Human Resources and Staff Development', 'Kensington Park Library',
+        'Little Falls Library', 'Long Branch Library',
+        'Maggie Nightingale Library', 'Marilyn J Praisner Library',
+        'Materials Delivery', 'Noyes Library', 'Olney Library',
+        'Potomac Library', 'Public Service Administration',
+        'Technology Management', 'Twinbrook Library', 'Wheaton Library',
+        'Executive Secretary', 'Merit System Protection Board', 'MCERP',
+        'Agricultural Services', 'Soil Conservation',
+        'Animal Services Division', 'Office of Animal Services',
+        'Investigations', 'Office of Consumer Protection', 'Operations',
+        'Food Systems Resilience', 'Office of Grants Management',
+        'Administrative Services Team',
+        'Business Operations and Performance Division',
+        'EEO Compliance and Diversity Management Division',
+        'Health and Employee Welfare Division', 'Health Insurance Team',
+        'Occupational Medical Services Team', 'Records Management Team',
+        'Recruitment and Selection Division', 'Stress Management Team',
+        'Training and Organizational Development Team',
+        'Classification and Compensation Team',
+        'Communications and Strategic Planning Team',
+        'Office of the Inspector General', 'Legislative Oversight Staff',
+        'Office of Legislative Oversight', 'Labor Relations Division',
+        'Office of Labor Relations', 'Office of Management and Budget',
+        'Process, Production and Technology',
+        'Office of Racial Equity and Social Justice', 'Cable Programming',
+        'Information', 'MC311', 'Web Content and Graphic Management',
+        'FSB Traffic Division School Safety Section',
+        'PSB 4th District Patrol', 'PSB 5th District Patrol',
+        'PSB 5th District Special Assignment Team',
+        'PSB 5th District Station',
+        'PSB 6th District Community Action Team',
+        'PSB 6th District Community Operations', 'PSB 6th District Patrol',
+        'PSB 6th District Special Assignment Team',
+        'PSB 6th District Station', 'PSB Duty Commander',
+        'FSB Security Services Division',
+        'CRB Community Engagement Division',
+        'CRB Community Engagement Division Community Engagement Section',
+        'CRB Community Engagement Division Crisis Response & Support Section',
+        'CRB Policy and Planning Division', 'Field Services Bureau',
+        'FSB Special Operations Division',
+        'FSB Special Operations Division Canine Section',
+        'FSB Special Operations Division Tactical Operations Section',
+        'FSB Traffic Division',
+        'FSB Traffic Division Alcohol Initiatives Section',
+        'FSB Traffic Division Automated Traffic Enforcement Section',
+        'FSB Traffic Division Central Traffic Enforcement',
+        'FSB Traffic Division Collision Reconstruction',
+        'HQ Office of the Chief',
+        'HQ Office of the Chief Internal Affairs Division',
+        'HQ Office of the Chief Legal and Labor Relations Division',
+        'HQ Office of the Chief Professional Accountability Division',
+        'HQ Office of the Chief Public Information Office',
+        'HQ Police Chief', 'Investigative Services Bureau',
+        'ISB Criminal Investigations Division',
+        'ISB Criminal Investigations Division 1st District Investigative Section',
+        'ISB Major Crimes Division',
+        'ISB Criminal Investigations Division 2nd District Investigative Section',
+        'ISB Criminal Investigations Division 3rd District Investigative Section',
+        'ISB Major Crimes Division Homicide and Sex Section',
+        'ISB Major Crimes Division Robbery Section',
+        'MSB Communications Division',
+        'MSB Information Management and Technology Division',
+        'MSB Information Management and Technology Division Crime Analysis Section',
+        'MSB Personnel Division Administration',
+        'MSB Personnel Division Background Section',
+        'PSB 1st District Patrol',
+        'PSB 1st District Special Assignment Team',
+        'PSB 1st District Station', 'PSB 3rd District Patrol',
+        'ISB Criminal Investigations Division 4th District Investigative Section',
+        'ISB Criminal Investigations Division 5th District Investigative Section',
+        'ISB Criminal Investigations Division 6th District Investigative Section',
+        'ISB Criminal Investigations Division Financial Crimes Section',
+        'ISB Criminal Investigations Division Forensic Services Section',
+        'ISB Forensics Sciences and Evidence Management Division Admin Section',
+        'ISB Forensics Sciences and Evidence Management Division Biology Section',
+        'ISB Forensics Sciences and Evidence Management Division Chemistry Section',
+        'ISB Forensics Sciences and Evidence Management Division Crime Scene Section',
+        'ISB Forensics Sciences and Evidence Management Division Electronic Crimes Section',
+        'ISB Forensics Sciences and Evidence Management Division Evidence Section',
+        'ISB Forensics Sciences and Evidence Management Division Pattern Sciences Section',
+        'ISB Major Crimes Division Cold Case Section',
+        'ISB Major Crimes Division Fugitive Section',
+        'ISB Major Crimes Division Victim Witness Assistance Section',
+        'ISB Special Victims Investigations Division',
+        'ISB Special Victims Investigations Division Child Abuse and Missing Children',
+        'ISB Special Victims Investigations Division Exploitation and Registry',
+        'ISB Special Victims Investigations Division Family Justice',
+        'Management Services Bureau',
+        'MSB Capital Development and Facilities Division',
+        'MSB Personnel Division', 'MSB Training and Education Division',
+        'MSB Information Management and Technology Division Data Systems Section',
+        'MSB Information Mgmt and Tech Division Records Management Section',
+        'MSB Information Mgmt and Tech Division Telephone Reporting Section',
+        'MSB Information Mgmt and Tech Division Warrant Control Section',
+        'MSB Management and Budget Division',
+        'MSB Management and Budget Division False Alarm Reduction Unit',
+        'MSB Management and Budget Division Fleet Management Section',
+        'MSB Management and Budget Division Procurement and Logistics',
+        'MSB Management and Budget Division Vehicle Recovery Section',
+        'MSB Personnel Division Polygraph Section',
+        'MSB Personnel Division Recruitment Section',
+        'Patrol Services Bureau', 'PSB 1st District Community Operations',
+        'PSB 2nd District Community Operations', 'PSB 2nd District Patrol',
+        'PSB 2nd District Special Assignment Team',
+        'PSB 2nd District Station',
+        'PSB 3rd District Community Action Team',
+        'PSB 3rd District Community Operations',
+        'PSB 3rd District Special Assignment Team',
+        'PSB 3rd District Station',
+        'PSB 4th District Community Action Team',
+        'PSB 4th District Community Operations',
+        'PSB 4th District Special Assignment Team',
+        'PSB 4th District Station',
+        'PSB 5th District Community Action Team',
+        'PSB 5th District Community Operations',
+        'Business Relations and Compliance Division',
+        'Living Wage, Prevailing Wage and Equal Benefits',
+        'MFD (Minority, Female, and Disabled Persons Program)',
+        'Office of Procurement', 'Procurement Director',
+        'Procurement Division', 'Procurement Operations Section',
+        'Procurement Services Section', 'Administration Division',
+        'Aquatic Team Management', 'Business Services',
+        'Countywide Programs', 'Facilities Division',
+        'Office of the Director', 'Programs Division', 'Senior Programs',
+        'Special Programs', 'Youth Development',
+        'Youth Development Youth Services', 'Attachments', 'Child Support',
+        'Court and Transport', 'Courthouse Security', 'Evictions',
+        'Sheriff Domestic Violence', 'Warrant Section', 'Civil Process',
+        'Civil, Child Support and Criminal Divison',
+        'CIO Change Management', 'CIO Chief Information Officer',
+        'CIO Device Client Management',
+        'CIO Enterprise Information Security Office',
+        'CIO Finance and Human Resources',
+        'CIO Integrated Justice Information Systems',
+        'CIO One Face Forward Initiative', 'CIO Project Management',
+        'CIO Project Management Staff', 'CIO Strategy and Planning',
+        'CIO System Center Configuration Management', 'OBP Voice Services',
+        'ODT Data Innovation Team', 'ODT Digital Transformation',
+        'ODT Enterprise Resource Planning', 'ODT Financials',
+        'ODT Geographic Information System',
+        'CIO Vendor and Contract Management', 'CIOs Office',
+        'OBP Community Engagement (Cable)',
+        'OBP Community Engagement (GF)',
+        'OBP Community Technology (Cable)', 'OBP Data Center Management',
+        'OBP Digital Equity (Cable)',
+        'OBP FiberNet Engineering and Operations',
+        'OBP FiberNet Infrastructure', 'OSP Strategic Partnerships',
+        'OBP Fibernet Operations (GF)',
+        'OBP Network Operations Center (NOC)',
+        'OBP Telecommunications Solutions', 'ODT Human Capital Management',
+        'ODT Payroll/Comp/BI', 'ODT Security and System Admin',
+        'ODT Technical Support Team', 'ODT Web Solutions Team',
+        'OPS Public Safety Data Systems', 'OPS Public Safety Programs',
+        'OPS Radio Communications Services',
+        'OSP DevOps and Server Support',
+        'OSP Employee Productivity Services',
+        'OSP Enterprise Cloud Solutions', 'OSP Enterprise Services Team',
+        'OSP Infrastructure and Cloud Services',
+        'OSP Low Code Governance and Administration',
+        'Office of Zoning and Administrative Hearings',
+        'Zoning and Administrative Hearings'];
+
+      var grade = ['M3', '21', '16', '18', 'N20', 'N25', '13', 'N27', 'N26',
+        '10', 'N18', '15', '12', 'N17', '22', '14', 'N21', 'EX1', 'N28',
+        'N16', '26', '19', '23', 'N5', 'M1', 'N23', 'N32', 'N15', 'N24',
+        'N13', 'N22', '9', 'EX3', '24', 'EX2', 'EX0', 'C5', 'C6', 'C1',
+        'C4', 'C2', '20', 'C3', '5', '17', '25', '27', 'N30', '28', '11',
+        '8', '7', 'N19', 'T1', 'T2', 'T1P', 'N29', 'B4', 'F3', 'F4', 'B2',
+        'B1', 'F2', 'B3', 'F1', 'F3P', 'B6', 'MD4', 'MD3', 'MD2', 'N39',
+        'N36', 'N33', 'N38', 'N31', 'N40', 'N14', 'P4', 'A1', 'P5', 'P4P',
+        'P3', 'P2', 'A2', 'A3', 'P1', 'S1', 'G4', 'D3', 'D2', 'D1', 'D4',
+        'G3', 'G1', 'G2', 'N34', 'N35'];
+
+      var gender = [{ id: 'F', text: 'Female' }];
+
+
+
+      $('#department').select2({
+        data: department,
+        placeholder: 'Search or select department',
+        allowClear: true,
+        width: '100%',
+      });
+      $('#department').val('{{ department }}').trigger('change');
+
+      $('#division').select2({
+        data: division,
+        placeholder: 'Search or select division',
+        allowClear: true,
+        width: '100%',
+      });
+      $('#division').val('{{ division }}').trigger('change');
+
+      $('#grade').select2({
+        data: grade,
+        placeholder: 'Search or select grade',
+        allowClear: true,
+        width: '100%',
+      });
+      $('#grade').val('{{ grade }}').trigger('change');
+
+      $('#gender').select2({
+        data: gender,
+        placeholder: 'Search or select gender',
+        allowClear: true,
+        width: '100%',
+      });
+      $('#gender').val('{{ gender }}').trigger('change');
+    });
+  </script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Montgomery County of Maryland</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+
+
+  <div class="container">
+    <div class="card">
+      <div class="card-body">
+
+        <h1 class="mt-2">Predict Base Salary</h1>
+        <form action="/" method="post" class="mt-4">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="department">Department:</label>
+                <select id="department" name="department" class="form-control">
+                  <option value="" {% if department=="" %} selected {% endif %}>Select Department</option>
+                  <option value="option_value" {% if department=="option_value" %} selected {% endif %}>ABS</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="grade">Grade:</label>
+                <select id="grade" name="grade" class="form-control">
+                  <option value="" {% if grade=="" %} selected {% endif %}>Select Grade</option>
+                  <option value="option_value" {% if grade=="option_value" %} selected {% endif %}>M2</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="overtime_pay">Overtime Pay:</label>
+                <input type="number" name="overtime_pay" id="overtime_pay" class="form-control" required
+                  value="{{ overtime_pay }}">
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="division">Division:</label>
+                <select id="division" name="division" class="form-control">
+                  <option value="" {% if division=="" %} selected {% endif %}>Select Division</option>
+                  <option value="option_value" {% if division=="option_value" %} selected {% endif %}>Administration</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select name="gender" id="gender" class="form-control" required>
+                  <option value="" {% if gender=="" %} selected {% endif %}>Select Gender</option>
+                  <option value="M" {% if gender=="M" %} selected {% endif %}>Male</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="longevity_pay">Longevity Pay:</label>
+                <input type="number" name="longevity_pay" id="longevity_pay" class="form-control" required
+                  value="{{ longevity_pay }}">
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-dark">Predict</button>
+        </form>
+
+
+        {% if predicted_salary %}
+        <h2 class="predict-text">Predicted Salary: ${{ predicted_salary }}</h2>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
