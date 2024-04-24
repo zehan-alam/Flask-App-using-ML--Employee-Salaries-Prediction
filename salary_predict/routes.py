@@ -2,8 +2,11 @@ from salary_predict import app
 from flask import render_template, request # type: ignore
 import pickle
 import pandas as pd
+import os
 
-with open('salary_predict.pkl', 'rb') as file:
+current_dir = os.path.dirname(__file__)
+model_path = os.path.join(current_dir, 'salary_predict.pkl')
+with open(model_path, 'rb') as file:
     model = pickle.load(file)
 
 @app.route('/', methods=['GET', 'POST'])
