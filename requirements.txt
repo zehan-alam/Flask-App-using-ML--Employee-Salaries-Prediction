@@ -1,4 +1,3 @@
-blinker @ file:///home/conda/feedstock_root/build_artifacts/blinker_1714254940188/work
 click @ file:///home/conda/feedstock_root/build_artifacts/click_1692311806742/work
 Flask @ file:///home/conda/feedstock_root/build_artifacts/flask_1712667726126/work
 gunicorn @ file:///Users/runner/miniforge3/conda-bld/gunicorn_1713358118198/work
